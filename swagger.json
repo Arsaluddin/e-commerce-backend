@@ -1,0 +1,21 @@
+{
+    "swaggerDefinition": {
+      "info": {
+        "title": "E-commerce API",
+        "version": "1.0.0",
+        "description": "API documentation for the e-commerce project"
+      },
+      "basePath": "/",
+      "produces": ["application/json"],
+      "schemes": ["http", "https"],
+      "securityDefinitions": {
+        "bearerAuth": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header"
+        }
+      }
+    },
+    "apis": ["./routes/*.js"]
+  }
+  

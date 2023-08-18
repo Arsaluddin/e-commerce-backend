@@ -79,3 +79,16 @@ exports.removeFromCart = async (req, res) => {
   }
 };
 
+exports.getUserCart = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      // Find user by userId and retrieve cart
+      const user = await User.findById(userId).populate('cart.productId');
+      if (!user) {
+        return res.status(404).json({ error: 'User not found.' });
+      }
+      res.status(200).json({ cart: user.cart });
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while fetching the cart.' });
+    }
+  };

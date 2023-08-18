@@ -6,11 +6,13 @@ const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const mongoose = require('mongoose')
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const categoryRoutes = require('./src/routes/categoryRoutes');
-// const productRoutes = require('./src/routes/productRoutes');
-// const userRoutes = require('./src/routes/userRoutes');
-// const cartRoutes = require('./src/routes/cartRoutes');
-// const orderRoutes = require('./src/routes/orderRoutes');
+const productRoutes = require('./src/routes/productRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const cartRoutes = require('./src/routes/cartRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
 
 dotenv.config();
 
@@ -36,13 +38,26 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+// Define Swagger options
+const options = {
+  swaggerDefinition: require('./swagger.json'),
+  apis: ['./routes/*.js'],
+};
+
+
+// Initialize Swagger
+const specs = swaggerJsdoc(options);
+
+// Serve Swagger documentation using Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 // Routes
 // Use your routes
 app.use('/categories', categoryRoutes);
-// app.use('/products', productRoutes);
-// app.use('/users', userRoutes);
-// app.use('/cart', cartRoutes);
-// app.use('/orders', orderRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use('/cart', cartRoutes);
+app.use('/orders', orderRoutes);
 
 // Start the server
 app.listen(PORT, () => {
